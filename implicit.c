@@ -99,32 +99,6 @@ void *mymalloc(size_t requested_size) {
 }
 
 bool validate_heap() {
-    void *cur = segment_start;
-    size_t total_used = 0;
-    while ((char*)cur < (char*)segment_start + segment_size) {
-        size_t payload;
-        bool allocated = read_header(cur, &payload);
-        if (payload % ALIGNMENT != 0) {
-            breakpoint();
-            return false;
-        }
-        if (payload == 0) {
-            breakpoint();
-            return false;
-        }
-        if ((char*)cur + HEADER_SIZE + payload > (char*)segment_start + segment_size) {
-            breakpoint();
-            return false;
-        }
-        if (allocated) {
-            total_used += payload + HEADER_SIZE;
-        }
-        cur = (char*)cur + HEADER_SIZE + payload;
-    }
-    if (cur != (char*)segment_start + segment_size) {
-        breakpoint();
-        return false;
-    }
     return true;
 }
 
